@@ -238,7 +238,7 @@ pipeline {
             script{
                    
                           sh '''  
-                           docker system prune -fp
+                           docker system prune -f
                            docker  network rm local_network                      
                          '''   
                 
