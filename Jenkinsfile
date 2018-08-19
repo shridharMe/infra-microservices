@@ -76,19 +76,7 @@ pipeline {
              }				
             
 		}
-        stage("install dependencies") {
-            when {
-                expression { params.REFRESH == false }     
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                        
-            }					
-            steps {
-                  dir('app-code') {
-                sh '''             
-                  make clean all
-                '''
-                  }
-            }
-		}
+  
         stage('docker build') {
             when {
                 expression { params.REFRESH == false }
