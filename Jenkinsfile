@@ -102,8 +102,9 @@ pipeline {
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end docker-build 
                         '''
 					}
+                    }
 				}
-                stage("newsfeed") {					
+                stage("newsfeed") {				
 					steps {
                      dir('app-code') {
 						 sh '''                       
