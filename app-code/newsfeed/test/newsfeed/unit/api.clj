@@ -28,7 +28,7 @@
 (facts "about 'formatting'"
        (fact "given various values will format correctly"
              (api/format-key-value :published-date (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd") "2016-01-01"))
-             => "2016-01-01T00:00:00.000+0800"
+             => "2016-01-01T00:00:00.000-0800"
              (api/format-key-value :title "Title")
              => "Title"))
 
