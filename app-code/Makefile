@@ -34,7 +34,7 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 docker-build:
-	@ docker build -t ${DOCKER_REPO_URL}/${APP_NAME} ${APP_NAME}/.
+	@ docker build -t ${DOCKER_REPO_URL}/${APP_NAME} .
 
 docker-tag:
 	@ docker tag ${DOCKER_REPO_URL}/${APP_NAME}:${TAG} ${DOCKER_REPO_URL}/${APP_NAME}:${TAG}

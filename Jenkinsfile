@@ -97,10 +97,10 @@ pipeline {
             parallel {
                 stage("front-end") {				
 					steps {
-                        dir('app-code') {
+                        dir('app-code/front-end') {
                         sh '''  
-                        cp -R build front-end/build  
-                                               
+                        cp -R ../build build  
+                         cp ../Makefile .                      
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end docker-build 
                         '''
 					}
@@ -108,10 +108,10 @@ pipeline {
 				}
                 stage("newsfeed") {				
 					steps {
-                     dir('app-code') {
+                     dir('app-code/newsfeed') {
 						 sh ''' 
-                          cp -R build newsfeed/build 
-                           .                    
+                          cp -R ../build build 
+                           cp ../Makefile .                    
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed docker-build 
                         '''
                      }
@@ -119,11 +119,11 @@ pipeline {
 				}
                 stage("quotes") {					
 					steps {
-                         dir('app-code') {
+                         dir('app-code/quotes') {
 						 sh '''
                            
-                          cp -R build quotes/build 
-                           
+                          cp -R ../build build 
+                          cp ../Makefile . 
                           make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes docker-build           
 						  
                         '''
@@ -142,23 +142,29 @@ pipeline {
                 stage("front-end") {
 					 
 					steps {
+                         dir('app-code') {
 						 sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end TAG=latest docker-tag
                         '''
+                         }
 					}
 				}
                 stage("newsfeed") {					
 					steps {
+                         dir('app-code') {
 						 sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed TAG=latest docker-tag
                         '''
+                         }
 					}
 				}
                 stage("quotes") {					
 					steps {
+                         dir('app-code') {
 						 sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes TAG=latest docker-tag
                         '''
+                         }
 					}
 				}
             }            
@@ -171,17 +177,23 @@ pipeline {
             parallel {
                 stage("front-end") {					
 					steps {
+                         dir('app-code') {
 						sh 'make docker-scanning'
+                         }
 					}
 				}
                 stage("newsfeed") {				
 					steps {
+                         dir('app-code') {
 						sh 'make docker-scanning'
+                         }
 					}
 				}
                 stage("quotes") {				
 					steps {
+                         dir('app-code') {
 						sh 'make docker-scanning'
+                         }
 					}
 				}
             } 
@@ -193,9 +205,11 @@ pipeline {
                 expression { params.TERRAFORM_ACTION == "deploy" }                                   
             }					
             steps {
+                 dir('app-code') {
                 sh '''             
                    make run-docker-compose
                 '''
+                 }
             }
 		}
         stage("owasp testing") {
@@ -204,9 +218,12 @@ pipeline {
                  expression { params.TERRAFORM_ACTION == "deploy" }                                        
             }					
             steps {
-                sh '''             
+                 dir('app-code') {
+                sh ''' 
+                            
                   make owsap-testing
                 '''
+                 }
             }
 		}
         stage("docker login") {
@@ -215,9 +232,11 @@ pipeline {
                  expression { params.TERRAFORM_ACTION == "deploy" }                                           
             }					
             steps {
+                 dir('app-code') {
                 sh '''             
                    make DOCKER_REPO_URL=${DOCKER_REPO_URL} DOCKER_REPO_PWD=${DOCKER_REPO_PWD} docker-login
                 '''
+                 }
             }
 		}
         stage('docker push') {
@@ -228,23 +247,29 @@ pipeline {
             parallel {
                 stage("front-end") {					
 					steps {
+                         dir('app-code') {
 						 sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end TAG=latest docker-push
                         '''
+                        }
 					}
 				}
                 stage("newsfeed") {
 					steps {
+                         dir('app-code') {
 						  sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed TAG=latest docker-push
                         '''
+                         }
 					}
 				}
                 stage("quotes") {
 					steps {
+                         dir('app-code') {
 						  sh '''                       
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes TAG=latest docker-push
                         '''
+                         }
 					}
 				}
             }            
