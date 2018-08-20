@@ -53,3 +53,10 @@ docker-scanning:
 owsap-testing:
 	@  echo "owasp testing"
 	@ /usr/local/bin/docker-compose f docker-compose.yml down
+
+clean-up:    
+	@ docker stop $(docker ps -qa)
+	@ docker rm  $(docker ps -qa)	
+	@ docker rmi $(docker images -qa)
+	@ docker system prune -f    
+	@ docker  network rm local_network

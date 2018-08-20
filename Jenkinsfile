@@ -280,9 +280,8 @@ pipeline {
             script{
                    
                           sh '''  
-                          
-                           docker system prune -f       
-                           docker  network rm local_network                                      
+                           make clean-up                             
+                                                              
                          '''   
                 
             }
