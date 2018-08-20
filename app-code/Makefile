@@ -34,6 +34,7 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 docker-build:
+	@ docker network create local_network
 	@ docker build -t ${DOCKER_REPO_URL}/${APP_NAME} .
 
 docker-tag:
