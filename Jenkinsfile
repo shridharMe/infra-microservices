@@ -281,8 +281,9 @@ pipeline {
             script{
                    
                           sh '''  
-                           docker  network rm local_network
-                           docker system prune -f                                             
+                          
+                           docker system prune -f       
+                           docker  network rm local_network                                      
                          '''   
                 
             }
