@@ -34,7 +34,7 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 docker-build:
-	@ docker network create local_network
+
 	@ docker build -t ${DOCKER_REPO_URL}/${APP_NAME} .
 
 docker-tag:
@@ -47,6 +47,7 @@ docker-scanning:
 	@  echo "docker scanning"
 
  run-docker-compose:
+	@ docker network create local_network
 	@ /usr/local/bin/docker-compose -f docker-compose.yml up -d --force-recreate
 
 owsap-testing:
