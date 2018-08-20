@@ -280,7 +280,9 @@ pipeline {
             script{
                    
                           sh '''  
-                           make clean-up                             
+                            docker stop $(docker ps -qa)
+                            docker rm  $(docker ps -qa)	                          
+                            docker system prune -f                                                
                                                               
                          '''   
                 
