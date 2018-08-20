@@ -99,7 +99,8 @@ pipeline {
 					steps {
                         dir('app-code/front-end') {
                         sh '''  
-                        cp -R ../build front-end/build                       
+                        cp -R ../build build  
+                         cp ../Makefile .                      
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end docker-build 
                         '''
 					}
@@ -109,7 +110,8 @@ pipeline {
 					steps {
                      dir('app-code/newsfeed') {
 						 sh ''' 
-                          cp -R ../build newsfeed/build                    
+                          cp -R ../build build 
+                           cp ../Makefile .                    
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed docker-build 
                         '''
                      }
@@ -119,7 +121,9 @@ pipeline {
 					steps {
                          dir('app-code/quotes') {
 						 sh '''
-                          cp -R ../build quotes/build  
+                           
+                          cp -R ../build build 
+                          cp ../Makefile . 
                           make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes docker-build           
 						  
                         '''
