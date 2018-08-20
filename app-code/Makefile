@@ -52,7 +52,7 @@ docker-scanning:
 
 owsap-testing:
 	@  echo "owasp testing"
-	@ /usr/local/bin/docker-compose f docker-compose.yml down
+	@ /usr/local/bin/docker-compose -f docker-compose.yml down
 
 clean-up:    
 	@ docker stop $(docker ps -qa)
