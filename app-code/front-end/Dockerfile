@@ -9,4 +9,4 @@ ENV NEWSFEED_SERVICE_TOKEN=T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX
 EXPOSE 8080
 COPY build/front-end.jar /front-end.jar
 RUN which java
-CMD ["/opt/jdk/bin/java", "-jar", "/front-end.jar"]
+CMD ["/usr/bin/java", "-jar", "/front-end.jar"]
