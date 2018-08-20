@@ -219,8 +219,7 @@ pipeline {
             }					
             steps {
                  dir('app-code') {
-                sh ''' 
-                            
+                sh '''                            
                   make owsap-testing
                 '''
                  }
