@@ -97,10 +97,10 @@ pipeline {
             parallel {
                 stage("front-end") {				
 					steps {
-                        dir('app-code/front-end') {
+                        dir('app-code') {
                         sh '''  
-                        cp -R ../build build  
-                         cp ../Makefile .                      
+                        cp -R build front-end/build  
+                                               
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end docker-build 
                         '''
 					}
@@ -108,10 +108,10 @@ pipeline {
 				}
                 stage("newsfeed") {				
 					steps {
-                     dir('app-code/newsfeed') {
+                     dir('app-code') {
 						 sh ''' 
-                          cp -R ../build build 
-                           cp ../Makefile .                    
+                          cp -R build newsfeed/build 
+                           .                    
 						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed docker-build 
                         '''
                      }
@@ -119,11 +119,11 @@ pipeline {
 				}
                 stage("quotes") {					
 					steps {
-                         dir('app-code/quotes') {
+                         dir('app-code') {
 						 sh '''
                            
-                          cp -R ../build build 
-                          cp ../Makefile . 
+                          cp -R build quotes/build 
+                           
                           make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes docker-build           
 						  
                         '''
