@@ -34,7 +34,6 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 docker-build:
-
 	@ docker build -t ${DOCKER_REPO_URL}/${APP_NAME} .
 
 docker-tag:
@@ -46,9 +45,16 @@ docker-push:
 docker-scanning:
 	@  echo "docker scanning"
 
+docker-push:
+	@ docker push ${DOCKER_REPO_URL}/rails-app:latest
+
+
  run-docker-compose:
 	@ docker network create local_network
 	@ /usr/local/bin/docker-compose -f docker-compose.yml up -d --force-recreate
+
+docker-login:
+	@  docker login --username=${DOCKER_REPO_URL} --password=${DOCKER_REPO_PWD}
 
 owsap-testing:
 	@  echo "owasp testing"
@@ -56,7 +62,6 @@ owsap-testing:
 
 clean-up:    
 	@ docker stop $(docker ps -qa)
-	@ docker rm  $(docker ps -qa)	
-	@ docker rmi $(docker images -qa)
+	@ docker rm  $(docker ps -qa)
 	@ docker system prune -f    
 	@ docker  network rm local_network
