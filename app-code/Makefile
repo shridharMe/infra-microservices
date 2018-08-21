@@ -46,8 +46,7 @@ docker-scanning:
 	@  echo "docker scanning"
 
 docker-push:
-	@ docker push ${DOCKER_REPO_URL}/rails-app:latest
-
+	@ docker push ${DOCKER_REPO_URL}/${APP_NAME}:${TAG}
 
  run-docker-compose:
 	@ docker network create local_network
