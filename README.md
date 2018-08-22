@@ -56,3 +56,14 @@ All the apps take environment variables to configure them and expose the URL `/p
 
 * `APP_PORT`: The port on which to run the app
 
+*Jenkins Pipeline setup*
+
+Add following credentials in Jenkins configuration
+( use secret text option )
+* `credentials('DOCKER_REPO_URL')`
+* `credentials('DOCKER_REPO_PWD')`
+* `credentials('HOSTED_ZONE_NAME')`
+* `credentials('AWS_ACCESS_KEY')`
+* `credentials('AWS_SECRET_KEY')`
+
+Refer following link to know the steps to add credentials in Jenkins https://support.cloudbees.com/hc/en-us/articles/203802500-Injecting-Secrets-into-Jenkins-Build-Jobs

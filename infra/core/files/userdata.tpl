@@ -81,7 +81,7 @@ front-end:
   container_name: front-end
   image: shridharpatil01/front-end
   ports:
-    - "80:8080"
+    - "8080:8080"
   links:
     - quotes:quotes
     - newsfeed:newsfeed
