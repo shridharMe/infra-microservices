@@ -1,6 +1,6 @@
 name_prefix = "app"
 alb_target_type = "instance"
-health_check_path = "/"
+alb_health_check_path = "/"
 path_pattern = "/"
 priority = "100"
 

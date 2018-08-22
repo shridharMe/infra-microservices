@@ -58,7 +58,7 @@ module "target_group_task" {
   source            = "git::https://github.com/shridharMe/terraform-modules.git//modules/alb/target-group"
   name              = "${var.name_prefix}-alb-target-group"
   vpc_id            = "${module.vpc.vpc_id}"
-  health_check_path = "${var.alb-health_check_path}"
+  health_check_path = "${var.alb_health_check_path}"
   target_type       = "${var.alb_target_type}"
   port              = "8080"
 }

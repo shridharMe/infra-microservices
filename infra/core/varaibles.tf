@@ -1,7 +1,7 @@
 variable "alb_target_type" {
     default = "instance"
 }
-variable "health_check_path" {
+variable "alb_health_check_path" {
      default ="/"
 }
 variable "path_pattern" {
