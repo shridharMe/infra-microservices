@@ -20,7 +20,14 @@ pipeline {
     }
     parameters {
          
-       choice(choices: 'deploy\nteardown', description: 'Select option to create or teardown infra ', name: 'TERRAFORM_ACTION')
+       booleanParam(name: 'BUILD',
+            defaultValue: true, 
+            description: 'select this option to build the code.( it is enabled by default)\n\n----------------------------------------------------------------\n\n To deploy the code please select image version from below list')       
+       
+       choice(choices: 'latest\n', description: 'select docker image version', name: 'IMAGE_VERSION')
+       
+       choice(choices: 'provision\nteardown', description: 'provision action; first creates the new environment (if it does not exist) and then do the deploy  \n\n select environment from below list to provision or destroy \n----------------------------------------------------------------', name: 'ACTION_ON_ENV')
+       
         booleanParam(name: 'DEV',
         defaultValue: true,
         description: '' ) 
@@ -33,7 +40,7 @@ pipeline {
         stage("install dependencies") {
             when {
                // expression { params.REFRESH == false }     
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                        
+                 expression { params.BUILD == true }                                        
             }					
             steps {
                 dir('app-code') {
@@ -46,7 +53,7 @@ pipeline {
          stage("testing") {
             when {
                // expression { params.REFRESH == false }       
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                      
+                  expression { params.BUILD == true }                                          
             }	
              parallel {
                   stage("sonar testing") {	
@@ -86,7 +93,7 @@ pipeline {
         stage("build") {
             when {
                // expression { params.REFRESH == false }     
-                expression { params.TERRAFORM_ACTION == "deploy" }                                        
+                 expression { params.BUILD == true }                                             
             }					
             steps {
                 dir('app-code') {
@@ -99,7 +106,7 @@ pipeline {
         stage('docker build') {
             when {
                 //expression { params.REFRESH == false }
-                 expression { params.TERRAFORM_ACTION == "deploy" }         
+                 expression { params.BUILD == true }           
             }
             parallel {
                 stage("front-end") {				
@@ -143,7 +150,7 @@ pipeline {
         stage('docker tagging') {
             when {
                 //expression { params.REFRESH == false }
-                 expression { params.TERRAFORM_ACTION == "deploy" }         
+                  expression { params.BUILD == true }           
             }
              parallel {
                 stage("front-end") {
@@ -151,7 +158,7 @@ pipeline {
 					steps {
                          dir('app-code') {
 						 sh '''                       
-						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end TAG=latest docker-tag
+						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=front-end TAG=${IMAGE_VERSION} docker-tag
                         '''
                          }
 					}
@@ -160,7 +167,7 @@ pipeline {
 					steps {
                          dir('app-code') {
 						 sh '''                       
-						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed TAG=latest docker-tag
+						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=newsfeed TAG=${IMAGE_VERSION} docker-tag
                         '''
                          }
 					}
@@ -169,7 +176,7 @@ pipeline {
 					steps {
                          dir('app-code') {
 						 sh '''                       
-						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes TAG=latest docker-tag
+						  make DOCKER_REPO_URL=${DOCKER_REPO_URL} APP_NAME=quotes TAG=${IMAGE_VERSION} docker-tag
                         '''
                          }
 					}
@@ -179,7 +186,7 @@ pipeline {
         stage('docker scanning') {
             when {
                 //expression { params.REFRESH == false }
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                    
+                  expression { params.BUILD == true }                                    
             }
             parallel {
                 stage("front-end") {					
@@ -209,7 +216,7 @@ pipeline {
         stage("run app") {
             when {
                // expression { params.REFRESH == false }   
-                expression { params.TERRAFORM_ACTION == "deploy" }                                   
+                expression { params.BUILD == true }                                        
             }					
             steps {
                  dir('app-code') {
@@ -222,7 +229,7 @@ pipeline {
         stage("owasp testing") {
             when {
                // expression { params.REFRESH == false }     
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                        
+                 expression { params.BUILD == true }                                             
             }					
             steps {
                  dir('app-code') {
@@ -235,7 +242,7 @@ pipeline {
         stage("docker login") {
             when {
                // expression { params.REFRESH == false }  
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                           
+                expression { params.BUILD == true }                                              
             }					
             steps {
                  dir('app-code') {
@@ -248,7 +255,7 @@ pipeline {
         stage('docker push') {
             when {
                // expression { params.REFRESH == false }    
-                 expression { params.TERRAFORM_ACTION == "deploy" }                                
+                 expression { params.BUILD == true }                                     
             }
             parallel {
                 stage("front-end") {					
@@ -284,7 +291,7 @@ pipeline {
         stage('Provision Dev env') {
             when {
                 //expression { params.REFRESH == false }
-                expression { params.TERRAFORM_ACTION == 'provision' }
+                expression { params.ACTION_ON_ENV == 'provision' }
                 expression { params.DEV == true }
             }
             steps {
