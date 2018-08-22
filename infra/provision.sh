@@ -32,25 +32,17 @@ else
     if [ ${runcmd} == "init" ];then
        rm -rf .terraform/
        yes yes |  TF_WORKSPACE=${envname} terraform ${runcmd}
-    elif [ ${runcmd} == "destroy" ];then
-      ecs_cluster_name=$( TF_WORKSPACE=${envname} terraform output cluster_name)
-      #aws ecs delete-cluster --cluster ${ecs_cluster_name}
+    elif [ ${runcmd} == "destroy" ];then   
 
-      for services in `aws ecs list-services --cluster $ecs_cluster_name | grep arn* | tr -d '"' | tr -d ',' `
-        do
-          aws ecs update-service --cluster $ecs_cluster_name --service $services --desired-count 0 --region eu-west-1
-          aws ecs delete-service --cluster $ecs_cluster_name --service $services --region eu-west-1
-      done;
-
-      TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars"  -force -var database_password=${DB_PASSWORD} -var database_username=${DB_USERNAME} -var datevar=${datevar} -var docker_image=${IMAGE_TAG}
+      TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars"   -var "hosted_zone_name=${HOSTED_ZONE_NAME}" -force 
      elif [ ${runcmd} == "apply" ];then
-       TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars"  -auto-approve -var database_password=${DB_PASSWORD} -var database_username=${DB_USERNAME} -var datevar=${datevar} -var docker_image=${IMAGE_TAG}
+       TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars"    -var "hosted_zone_name=${HOSTED_ZONE_NAME}"  -auto-approve
        export api_dns_name=$( TF_WORKSPACE=${envname} terraform output api_dns_name)
        export ui_dns_name=$( TF_WORKSPACE=${envname} terraform output ui_dns_name)
        echo $api_dns_name
        echo $ui_dns_name
     else
-       TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars" -var 'database_password=${DB_PASSWORD}' -var 'database_username=${DB_USERNAME}' -var datevar=${datevar} -var docker_image=${IMAGE_TAG}
+       TF_WORKSPACE=${envname} terraform ${runcmd} -var-file="variables/$envname.tfvars"    -var "hosted_zone_name=${HOSTED_ZONE_NAME}"
     fi
 
 fi

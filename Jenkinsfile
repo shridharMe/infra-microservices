@@ -12,7 +12,6 @@ pipeline {
         DOCKER_REPO_URL          = credentials('DOCKER_REPO_URL')        
         DOCKER_REPO_PWD          = credentials('DOCKER_REPO_PWD') 
         HOSTED_ZONE_NAME         = credentials('HOSTED_ZONE_NAME')
-        TERRAFORM_USER_ARN       = credentials('TERRAFORM_USER_ARN')
         AWS_ACCESS_KEY_ID        = credentials('AWS_ACCESS_KEY')
         AWS_SECRET_ACCESS_KEY    = credentials('AWS_SECRET_KEY')  
         ENV_NAME                 = "dev" 

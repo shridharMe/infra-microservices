@@ -60,6 +60,11 @@ resource "aws_security_group" "instance-app-sg" {
     Name = "${var.name}-app-sg"
   }
 }
+
+data "aws_route53_zone" "route53" {
+  name = "${var.hosted_zone_name}."
+}
+
 module "ec2" {
     source                = "git::https://github.com/shridharMe/terraform-modules.git//modules/ec2?ref=master"
     key_name              ="${var.key_name}"
@@ -70,7 +75,7 @@ module "ec2" {
     subnet_ids            =["${module.vpc.private_subnets}"]
     vpc_id                ="${module.vpc.vpc_id}"
     security_groups       =["${aws_security_group.instance-app-sg.id}"]
-    route53_zone_id       ="${var.route53zoneid}"
+    route53_zone_id       = "${data.aws_route53_zone.route53.zone_id}"
     iam_instance_profile  ="${aws_iam_instance_profile.instance_profile.name}"
     ami_id                ="${var.ami_id}"
     type                  ="${var.instance_type}"

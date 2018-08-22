@@ -17,7 +17,7 @@ variable "source_cidr_block_inbound" {
 variable "internal" {
     default=true
 }
-variable "route53zoneid" {
+variable "hosted_zone_name" {
      default=""
 }
 variable "route53type" {
