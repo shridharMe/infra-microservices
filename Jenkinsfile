@@ -321,7 +321,7 @@ pipeline {
                     ./provision.sh -e dev -r init
                     ./provision.sh -e dev -r validate
                     ./provision.sh -e dev -r plan
-                    ./provision.sh -e dev -r apply
+                    ./provision.sh -e dev -r destroy
                     '''
                 }
             }
