@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 echo '====================Removing older versions of Docker ======================='
  yum -y  remove docker \
                   docker-client \
