@@ -34,7 +34,7 @@ module "alb" {
   environment     = "${var.environment}"
   terraform       = "${var.terraform}"
   owner           = "${var.owner}"
-  route53zoneid   = "${var.route53zoneid}"
+  route53zoneid   = "${data.aws_route53_zone.route53.zone_id}"
   route53type     = "${var.route53type}"
   route53ttl      = "${var.route53ttl}"
 }

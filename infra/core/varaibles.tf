@@ -8,7 +8,9 @@ variable "path_pattern" {
     default ="/"
 }
 variable "priority" {}
-
+variable "name_prefix" {
+    defualt =""
+}
 variable "source_cidr_block_inbound" {
     default =["0.0.0.0/0"]
     type ="list"

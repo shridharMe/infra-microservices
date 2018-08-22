@@ -13,25 +13,25 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
   }
 }
 resource "aws_iam_role" "instance-assume-role" {	    
-	name               = "${var.name}-role"
+	name               = "${var.name_prefix}-role"
   path               = "/"
 	assume_role_policy = "${data.aws_iam_policy_document.instance-assume-role-policy.json}"
 }
 
 resource "aws_iam_role_policy" "iecr-power-user-policy" {
   role        = "${aws_iam_role.instance-assume-role.id}"
-  name        = "${var.name}-ecr-policy"
+  name        = "${var.name_prefix}-ecr-policy"
   policy      = "${file("${path.module}/files/ecr-power-user-policy.json")}"
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {	  
-    name        = "${var.name}-iam-profile"	    
+    name        = "${var.name_prefix}-iam-profile"	    
     role        = "${aws_iam_role.instance-assume-role.name}"	
 }
 resource "aws_security_group" "instance-app-sg" {
-  name          = "${var.name}-app-sg"
-  description   = "${var.name}-app-sg"
-  vpc_id        = "${var.vpc_id}"
+  name          = "${var.name_prefix}-app-sg"
+  description   = "${var.name_prefix}-app-sg"
+  vpc_id        = "${module.vpc.vpc_id}"
   ingress {
            from_port      = 8080
            to_port        = 8080
@@ -57,7 +57,7 @@ resource "aws_security_group" "instance-app-sg" {
           cidr_blocks = ["0.0.0.0/0"]
          }
    tags {
-    Name = "${var.name}-app-sg"
+    Name = "${var.name_prefix}-app-sg"
   }
 }
 
@@ -68,7 +68,7 @@ data "aws_route53_zone" "route53" {
 module "ec2" {
     source                = "git::https://github.com/shridharMe/terraform-modules.git//modules/ec2?ref=master"
     key_name              ="${var.key_name}"
-    name                  ="${var.name_prefix}"
+    name                  ="${var.name_prefix_prefix}"
     user_data             ="${data.template_file.userdata.rendered}"
     environment           ="${var.environment}"
     resource_type_tag     ="${var.resource_type_tag}"
