@@ -7,9 +7,11 @@ variable "health_check_path" {
 variable "path_pattern" {
     default ="/"
 }
-variable "priority" {}
+variable "priority" {
+ default = "100"
+}
 variable "name_prefix" {
-    defualt =""
+    default = "app"
 }
 variable "source_cidr_block_inbound" {
     default =["0.0.0.0/0"]
