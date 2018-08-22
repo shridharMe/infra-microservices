@@ -36,19 +36,19 @@ resource "aws_security_group" "instance-app-sg" {
            from_port      = 8080
            to_port        = 8080
            protocol       = "tcp"
-           security_groups = ["${var.vpc_cidr}"]
+           security_groups = ["${var.cidr}"]
           }
   ingress {
       from_port           = 22
       to_port             = 22
       protocol            = "tcp"
-      cidr_blocks         = ["${var.vpc_cidr}"]
+      cidr_blocks         = ["${var.cidr}"]
     }
   ingress {
     from_port             = 80
     to_port               = 80
     protocol              = "tcp"
-    cidr_blocks           = ["${var.vpc_cidr}"]
+    cidr_blocks           = ["${var.cidr}"]
   }
   egress {
           from_port   = 0
@@ -68,7 +68,7 @@ data "aws_route53_zone" "route53" {
 module "ec2" {
     source                = "git::https://github.com/shridharMe/terraform-modules.git//modules/ec2?ref=master"
     key_name              ="${var.key_name}"
-    name                  ="${var.name_prefix_prefix}"
+    name                  ="${var.name_prefix}"
     user_data             ="${data.template_file.userdata.rendered}"
     environment           ="${var.environment}"
     resource_type_tag     ="${var.resource_type_tag}"
