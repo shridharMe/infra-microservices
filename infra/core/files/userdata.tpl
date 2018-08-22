@@ -107,4 +107,4 @@ newsfeed:
 EOF
 
  
-/usr/local/bin/docker-compose -f ./docker-compose.yaml up -d
+docker-compose -f ./docker-compose.yaml up -d
