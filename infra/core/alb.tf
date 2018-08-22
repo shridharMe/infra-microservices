@@ -65,6 +65,6 @@ module "target_group_task" {
 
 resource "aws_lb_target_group_attachment" "ec2alb" {
   target_group_arn = "${module.target_group_task.arn}"
-  target_id        = "${module.ec2.ec2_instance_id}"
+  target_id        = "${element(module.ec2.ec2_instance_id,0)}"
   port             = 8080
 }
