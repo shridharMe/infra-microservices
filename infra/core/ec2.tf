@@ -1,7 +1,9 @@
  
 data "template_file" "userdata" {
   template                = "${file("${path.module}/files/userdata.tpl")}"
-  CUSTOM_NETWORK_NAME     = "local_network"
+  vars {
+   CUSTOM_NETWORK_NAME     = "local_network"
+  }
 }
 
 data "aws_iam_policy_document" "instance-assume-role-policy" {
