@@ -306,6 +306,25 @@ pipeline {
                 }
             }
         } 
+        stage('teardown Dev env') {
+            when {
+                //expression { params.REFRESH == false }
+                expression { params.ACTION_ON_ENV == 'teardown' }
+                expression { params.DEV == true }
+            }
+            steps {
+                dir('infra/core') {
+                sh  '''   
+                    cp ../provision.sh .
+                    chmod +x ./provision.sh                                 
+                    ./provision.sh -e dev -r init
+                    ./provision.sh -e dev -r validate
+                    ./provision.sh -e dev -r plan
+                    ./provision.sh -e dev -r apply
+                    '''
+                }
+            }
+        } 
     }
     post { 
         always {
