@@ -19,13 +19,20 @@ pipeline {
         SQUAD_NAME               = "devops"
     }
     parameters {
-        booleanParam(name: 'REFRESH',defaultValue: true,description: 'Refresh Jenkinsfile and exit.')
-       choice(choices: 'deploy\nteardown', description: 'Select option to create or teardown infro', name: 'TERRAFORM_ACTION')
+         
+       choice(choices: 'deploy\nteardown', description: 'Select option to create or teardown infra ', name: 'TERRAFORM_ACTION')
+        booleanParam(name: 'DEV',
+        defaultValue: true,
+        description: '' ) 
+
+        booleanParam(name: 'INT',
+        defaultValue: false,
+        description: '')
     }
     stages {
         stage("install dependencies") {
             when {
-                expression { params.REFRESH == false }     
+               // expression { params.REFRESH == false }     
                  expression { params.TERRAFORM_ACTION == "deploy" }                                        
             }					
             steps {
@@ -38,7 +45,7 @@ pipeline {
 		}
          stage("testing") {
             when {
-                expression { params.REFRESH == false }       
+               // expression { params.REFRESH == false }       
                  expression { params.TERRAFORM_ACTION == "deploy" }                                      
             }	
              parallel {
@@ -78,7 +85,7 @@ pipeline {
 		}
         stage("build") {
             when {
-                expression { params.REFRESH == false }     
+               // expression { params.REFRESH == false }     
                 expression { params.TERRAFORM_ACTION == "deploy" }                                        
             }					
             steps {
@@ -91,7 +98,7 @@ pipeline {
 		}
         stage('docker build') {
             when {
-                expression { params.REFRESH == false }
+                //expression { params.REFRESH == false }
                  expression { params.TERRAFORM_ACTION == "deploy" }         
             }
             parallel {
@@ -135,7 +142,7 @@ pipeline {
         }
         stage('docker tagging') {
             when {
-                expression { params.REFRESH == false }
+                //expression { params.REFRESH == false }
                  expression { params.TERRAFORM_ACTION == "deploy" }         
             }
              parallel {
@@ -171,7 +178,7 @@ pipeline {
         }
         stage('docker scanning') {
             when {
-                expression { params.REFRESH == false }
+                //expression { params.REFRESH == false }
                  expression { params.TERRAFORM_ACTION == "deploy" }                                    
             }
             parallel {
@@ -201,7 +208,7 @@ pipeline {
         } 
         stage("run app") {
             when {
-                expression { params.REFRESH == false }   
+               // expression { params.REFRESH == false }   
                 expression { params.TERRAFORM_ACTION == "deploy" }                                   
             }					
             steps {
@@ -214,7 +221,7 @@ pipeline {
 		}
         stage("owasp testing") {
             when {
-                expression { params.REFRESH == false }     
+               // expression { params.REFRESH == false }     
                  expression { params.TERRAFORM_ACTION == "deploy" }                                        
             }					
             steps {
@@ -227,7 +234,7 @@ pipeline {
 		}
         stage("docker login") {
             when {
-                expression { params.REFRESH == false }  
+               // expression { params.REFRESH == false }  
                  expression { params.TERRAFORM_ACTION == "deploy" }                                           
             }					
             steps {
@@ -240,7 +247,7 @@ pipeline {
 		}
         stage('docker push') {
             when {
-                expression { params.REFRESH == false }    
+               // expression { params.REFRESH == false }    
                  expression { params.TERRAFORM_ACTION == "deploy" }                                
             }
             parallel {
@@ -274,6 +281,26 @@ pipeline {
             }            
             
         }
+        stage('Provision Dev env') {
+            when {
+                //expression { params.REFRESH == false }
+                expression { params.TERRAFORM_ACTION == 'provision' }
+                expression { params.DEV == true }
+            }
+            steps {
+                dir('infra/core') {
+                sh  '''   
+                    cp ../provision.sh .
+                    chmod +x ./provision.sh   
+                    ./provision.sh -e dev -r refresh                  
+                    ./provision.sh -e dev -r init
+                    ./provision.sh -e dev -r validate
+                    ./provision.sh -e dev -r plan
+                    ./provision.sh -e dev -r apply
+                    '''
+                }
+            }
+        } 
     }
     post { 
         always {

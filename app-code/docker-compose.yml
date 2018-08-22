@@ -7,7 +7,7 @@ front-end:
     - quotes:quotes
     - newsfeed:newsfeed
   environment:
-    APP_PORT: 8080
+    APP_PORT: 9080
     STATIC_URL: http://localhost:8080
     QUOTE_SERVICE_URL: http://quotes:8001
     NEWSFEED_SERVICE_URL: http://newsfeed:8002
