@@ -93,19 +93,19 @@ front-end:
     QUOTE_SERVICE_URL: http://quotes:8001
     NEWSFEED_SERVICE_URL: http://newsfeed:8002
     NEWSFEED_SERVICE_TOKEN: T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX
-  net: local_network
+  net: ${CUSTOM_NETWORK_NAME}
 quotes:
   container_name: quotes
   image: shridharpatil01/quotes
   ports:
   - "8001:8001"
-  net: local_network  
+  net: ${CUSTOM_NETWORK_NAME}  
 newsfeed:
   container_name: newsfeed
   image: shridharpatil01/newsfeed
   ports:
   - "8002:8002"
-  net: local_network
+  net: ${CUSTOM_NETWORK_NAME}
 EOF
 
  
