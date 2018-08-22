@@ -39,7 +39,8 @@ pipeline {
         stage("install dependencies") {
             when {
                // expression { params.REFRESH == false }     
-                 expression { params.BUILD == true }                                        
+                 expression { params.BUILD == true }   
+                expression { params.ACTION_ON_ENV == 'provision' }                                     
             }					
             steps {
                 dir('app-code') {
@@ -51,7 +52,7 @@ pipeline {
 		}
          stage("testing") {
             when {
-               // expression { params.REFRESH == false }       
+                  expression { params.ACTION_ON_ENV == 'provision' }        
                   expression { params.BUILD == true }                                          
             }	
              parallel {
@@ -91,7 +92,7 @@ pipeline {
 		}
         stage("build") {
             when {
-               // expression { params.REFRESH == false }     
+                 expression { params.ACTION_ON_ENV == 'provision' }    
                  expression { params.BUILD == true }                                             
             }					
             steps {
@@ -104,7 +105,7 @@ pipeline {
 		}
         stage('docker build') {
             when {
-                //expression { params.REFRESH == false }
+                   expression { params.ACTION_ON_ENV == 'provision' } 
                  expression { params.BUILD == true }           
             }
             parallel {
@@ -148,7 +149,7 @@ pipeline {
         }
         stage('docker tagging') {
             when {
-                //expression { params.REFRESH == false }
+                   expression { params.ACTION_ON_ENV == 'provision' } }
                   expression { params.BUILD == true }           
             }
              parallel {
@@ -184,7 +185,7 @@ pipeline {
         }
         stage('docker scanning') {
             when {
-                //expression { params.REFRESH == false }
+                  expression { params.ACTION_ON_ENV == 'provision' } 
                   expression { params.BUILD == true }                                    
             }
             parallel {
@@ -214,7 +215,7 @@ pipeline {
         } 
         stage("run app") {
             when {
-               // expression { params.REFRESH == false }   
+                  expression { params.ACTION_ON_ENV == 'provision' }  
                 expression { params.BUILD == true }                                        
             }					
             steps {
@@ -240,7 +241,7 @@ pipeline {
 		}
         stage("docker login") {
             when {
-               // expression { params.REFRESH == false }  
+                 expression { params.ACTION_ON_ENV == 'provision' }  
                 expression { params.BUILD == true }                                              
             }					
             steps {
@@ -253,7 +254,7 @@ pipeline {
 		}
         stage('docker push') {
             when {
-               // expression { params.REFRESH == false }    
+                  expression { params.ACTION_ON_ENV == 'provision' }    
                  expression { params.BUILD == true }                                     
             }
             parallel {
@@ -356,5 +357,3 @@ pipeline {
         }
     }
 }
-
-
