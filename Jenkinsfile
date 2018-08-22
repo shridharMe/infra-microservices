@@ -297,8 +297,7 @@ pipeline {
                 dir('infra/core') {
                 sh  '''   
                     cp ../provision.sh .
-                    chmod +x ./provision.sh   
-                    ./provision.sh -e dev -r refresh                  
+                    chmod +x ./provision.sh                                 
                     ./provision.sh -e dev -r init
                     ./provision.sh -e dev -r validate
                     ./provision.sh -e dev -r plan
