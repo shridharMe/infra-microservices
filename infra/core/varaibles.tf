@@ -43,15 +43,15 @@ variable "cidr" {
 }
 variable "public_subnets_cidr" {
       default=["10.1.1.0/24", "10.1.2.0/24"]
-      type =list
+      type ="list"
 }
 variable "private_subnets_cidr"   {
     default =["10.1.3.0/24", "10.1.4.0/24"]
-    type =list
+    type ="list"
 }
 variable "azs" {
     default =["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-    type = list
+    type = "list"
 }
 
 variable "ami_id"   {
