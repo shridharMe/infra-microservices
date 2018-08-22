@@ -149,7 +149,7 @@ pipeline {
         }
         stage('docker tagging') {
             when {
-                   expression { params.ACTION_ON_ENV == 'provision' } }
+                   expression { params.ACTION_ON_ENV == 'provision' }
                   expression { params.BUILD == true }           
             }
              parallel {
@@ -228,7 +228,7 @@ pipeline {
 		}
         stage("owasp testing") {
             when {
-               // expression { params.REFRESH == false }     
+           expression { params.ACTION_ON_ENV == 'provision' }     
                  expression { params.BUILD == true }                                             
             }					
             steps {
