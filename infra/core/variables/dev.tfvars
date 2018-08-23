@@ -6,7 +6,7 @@ priority = "100"
 
 source_cidr_block_inbound = ["0.0.0.0/0"]
 
-internal = "true"
+internal = "false"
 route53zoneid = ""
 route53type = "CNAME"
 route53ttl = "300"
