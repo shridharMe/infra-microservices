@@ -39,7 +39,7 @@ resource "aws_security_group" "instance-app-sg" {
            from_port      = 8080
            to_port        = 8080
            protocol       = "tcp"
-           cidr_blocks = ["${aws_security_group.alb-sg.id}"]
+           security_groups = ["${aws_security_group.alb-sg.id}"]
           }
     ingress {
            from_port      = 8080
